@@ -60,6 +60,7 @@ export default {
       this.content = value;
     },
     content(value) {
+      console.log(value)
       if (this.isMd) {
         this.html = md.render(value);
       } else {
@@ -69,8 +70,11 @@ export default {
         // setTimeout(function () {
         this.$el.querySelectorAll(".md-flowchart").forEach(element => {
           try {
+            console.log(element)
             let code = element.textContent;
+            console.log(code)
             let chart = flowchart.parse(code);
+            console.log(chart)
             element.textContent = "";
             chart.drawSVG(element);
           } catch (e) {
