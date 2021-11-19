@@ -14,7 +14,7 @@
         class="le-img-preview"
         @click="previewImg = ''"
         :style="imgPreviewStyle"
-        v-if="previewImg!==''"
+        v-if="previewImg !== ''"
       >
         <img :src="previewImg" id="le-img-preview-content" alt />
       </div>
@@ -25,6 +25,7 @@
 import flowchart from "flowchart.js";
 import { toKebabCase, hljsCssConfig } from "../../lib/core/hljs-plugn";
 import md from "../../lib/core/markdown";
+import mermaid from "mermaid";
 
 export default {
   name: "le-preview",
@@ -60,7 +61,6 @@ export default {
       this.content = value;
     },
     content(value) {
-      console.log(value)
       if (this.isMd) {
         this.html = md.render(value);
       } else {
@@ -68,15 +68,29 @@ export default {
       }
       this.$nextTick().then(() => {
         // setTimeout(function () {
-        this.$el.querySelectorAll(".md-flowchart").forEach(element => {
+        this.$el.querySelectorAll(".md-flowchart").forEach((element) => {
           try {
-            console.log(element)
             let code = element.textContent;
-            console.log(code)
             let chart = flowchart.parse(code);
-            console.log(chart)
+            console.log(chart);
             element.textContent = "";
             chart.drawSVG(element);
+          } catch (e) {
+            element.outerHTML = `<pre>error: ${e}</pre>`;
+          }
+        });
+        this.$el.querySelectorAll(".md-mermaid").forEach((element, i, nodes) => {
+          try {
+            console.log(i)
+            console.log(nodes[i.toString()] )
+            let code = element.textContent;
+            let insertSvg = function(svgCode, bindFunctions){
+                // document.querySelector(".md-mermaid").innerHTML = svgCode;
+                console.log(i.toString())
+                nodes[i.toString()].innerHTML = svgCode
+            };
+            console.log(mermaid)
+            mermaid.render('mermaid' + i.toString(), code, insertSvg);
           } catch (e) {
             element.outerHTML = `<pre>error: ${e}</pre>`;
           }
@@ -144,7 +158,7 @@ export default {
     // 监听图片点击
     this.$el
       .querySelector(".markdown-body")
-      .addEventListener("click", function(event) {
+      .addEventListener("click", function (event) {
         event = event ? event : window.event;
         let ele = event.srcElement ? event.srcElement : event.target;
         if (ele.tagName === "IMG") {

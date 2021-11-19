@@ -21,20 +21,30 @@ export default {
     return {
       hljsCss: "agate",
       value:
-        "# 流程图\n" +
-        "```flow\n" +
-        "start=>start: 开始\n" +
-        "loginInfo=>inputoutput: 登录数据\n" +
-        "verifyLogin=>subroutine: 登录验证\n" +
-        "isSuccess=>condition: 验证成功？\n" +
-        "respondSuccess=>operation: 响应成功\n" +
-        "responseFailure=>operation: 响应失败\n" +
-        "end=>end: 结束\n" +
-        "\n" +
-        "start->loginInfo->verifyLogin->isSuccess\n" +
-        "isSuccess(yes)->respondSuccess->end\n" +
-        "isSuccess(no)->responseFailure->end\n" +
-        "```\n",
+        "```mermaid\n" +
+        "graph TD\n" +
+        "A[runDocker <- dockerCli] -->| 实例化 | B(cmd.Execute )\n" +
+        "B -->|执行 | C(c.Traverse)\n" +
+        "C -->| 遍历命令| D(c.findNext)\n" +
+        "D -->| 预定义了一组Commands,包含所有的docker命令 通过cmd.Name == next过滤命令| F(cmd.execute <- flags)\n" +
+        "F -->| 实现接口赋值实现绑定| G(c.RunE <- runImages)\n" +
+        "G -->|执行 | H(dockerCli.Client.ImageList)\n" +
+        "H -->|获取客户端实例,调用ImageList方法与服务器通信 | I(dockerCli.Client.ImageList)\n" +
+        "I -->|GET接口获取数据 | J(cli.get <- /images/json)\n" +
+        "J -->|格式化输出 | K(formatter.ImageWrite)\n" +
+        "```\n" +
+        "```mermaid\n" +
+        "graph TD\n" +
+        "A[runDocker <- dockerCli] -->| 实例化 | B(cmd.Execute )\n" +
+        "B -->|执行 | C(c.Traverse)\n" +
+        "C -->| 遍历命令| D(c.findNext)\n" +
+        "D -->| 预定义了一组Commands,包含所有的docker命令 通过cmd.Name == next过滤命令| F(cmd.execute <- flags)\n" +
+        "F -->| 实现接口赋值实现绑定| G(c.RunE <- runImages)\n" +
+        "G -->|执行 | H(dockerCli.Client.ImageList)\n" +
+        "H -->|获取客户端实例,调用ImageList方法与服务器通信 | I(dockerCli.Client.ImageList)\n" +
+        "I -->|GET接口获取数据 | J(cli.get <- /images/json)\n" +
+        "J -->|格式化输出 | K(formatter.ImageWrite)\n" +
+        "```",
       appStyle: {
         // width: document.documentElement.clientWidth + 'px',
         // height: document.documentElement.clientHeight + 'px'
